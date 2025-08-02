@@ -206,6 +206,8 @@ static boolean parseTagRegex (
 {
     boolean result = FALSE;
     const int separator = (unsigned char) regexp [0];
+    char* third;
+    char* fourth;
 
     *name = scanSeparators (regexp);
     if (*regexp == '\0')
@@ -214,7 +216,7 @@ static boolean parseTagRegex (
 	error (WARNING, "%s: incomplete regexp", regexp);
     else
     {
-	char* const third = scanSeparators (*name);
+	third = scanSeparators (*name);
 	if (**name == '\0')
 	    error (WARNING, "%s: regexp missing name pattern", regexp);
 	if ((*name) [strlen (*name) - 1] == '\\')
@@ -223,7 +225,7 @@ static boolean parseTagRegex (
 	    error (WARNING, "%s: regexp missing final separator", regexp);
 	else
 	{
-	    char* const fourth = scanSeparators (third);
+	    fourth = scanSeparators (third);
 	    if (*fourth == separator)
 	    {
 		*kinds = third;
@@ -302,6 +304,11 @@ static void addCompiledCallbackPattern (
 
 #if defined (POSIX_REGEX)
 
+/* POSIX regex constants if not already defined */
+#ifndef REG_ICASE
+#define REG_ICASE 1
+#endif
+
 static regex_t* compileRegex (const char* const regexp, const char* const flags)
 {
     int cflags = REG_EXTENDED | REG_NEWLINE;
@@ -338,6 +345,9 @@ static void parseKinds (
 	const char* const kinds, char* const kind, char** const kindName,
 	char **description)
 {
+    const char* k;
+    const char *comma;
+    
     *kind = '\0';
     *kindName = NULL;
     *description = NULL;
@@ -348,7 +358,7 @@ static void parseKinds (
     }
     else if (kinds [0] != '\0')
     {
-	const char* k = kinds;
+	k = kinds;
 	if (k [0] != ','  &&  (k [1] == ','  ||  k [1] == '\0'))
 	    *kind = *k++;
 	else
@@ -359,7 +369,7 @@ static void parseKinds (
 	    *kindName = eStrdup ("regex");
 	else
 	{
-	    const char *const comma = strchr (k, ',');
+	    comma = strchr (k, ',');
 	    if (comma == NULL)
 		*kindName = eStrdup (k);
 	    else
@@ -378,7 +388,7 @@ static void parseKinds (
 static void printRegexKind (const regexPattern *pat, unsigned int i, boolean indent)
 {
     const struct sKind *const kind = &pat [i].u.tag.kind;
-    const char *const indentation = indent ? "    " : "";
+    const char *indentation = indent ? "    " : "";
     Assert (pat [i].type == PTRN_TAG);
     printf ("%s%c  %s %s\n", indentation,
 	    kind->letter != '\0' ? kind->letter : '?',
@@ -398,12 +408,14 @@ static void processLanguageRegex (const langType language,
     else
     {
 	const char* regexfile = parameter + 1;
-	FILE* const fp = fopen (regexfile, "r");
+	FILE* fp = fopen (regexfile, "r");
+	vString* regex;
+	
 	if (fp == NULL)
 	    error (WARNING | PERROR, regexfile);
 	else
 	{
-	    vString* const regex = vStringNew ();
+	    regex = vStringNew ();
 	    while (readLine (regex, fp))
 		addLanguageRegex (language, vStringValue (regex));
 	    fclose (fp);
@@ -424,14 +436,17 @@ static vString* substitute (
 {
     vString* result = vStringNew ();
     const char* p;
+    int dig;
+    int diglen;
+    
     for (p = out  ;  *p != '\0'  ;  p++)
     {
 	if (*p == '\\'  &&  isdigit ((int) *++p))
 	{
-	    const int dig = *p - '0';
+	    dig = *p - '0';
 	    if (0 < dig  &&  dig < nmatch  &&  pmatch [dig].rm_so != -1)
 	    {
-		const int diglen = pmatch [dig].rm_eo - pmatch [dig].rm_so;
+		diglen = pmatch [dig].rm_eo - pmatch [dig].rm_so;
 		vStringNCatS (result, in + pmatch [dig].rm_so, diglen);
 	    }
 	}
@@ -480,8 +495,10 @@ static boolean matchRegexPattern (const vString* const line,
 {
     boolean result = FALSE;
     regmatch_t pmatch [BACK_REFERENCE_COUNT];
-    const int match = regexec (patbuf->pattern, vStringValue (line),
-			       BACK_REFERENCE_COUNT, pmatch, 0);
+    int match;
+    
+    match = regexec (patbuf->pattern, vStringValue (line),
+		     BACK_REFERENCE_COUNT, pmatch, 0);
     if (match == 0)
     {
 	result = TRUE;

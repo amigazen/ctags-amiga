@@ -1,0 +1,6 @@
+*.o
+*.debug
+*.map
+a.out
+*.gst
+*.gst.info

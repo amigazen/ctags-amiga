@@ -40,7 +40,7 @@ Each component of **ToolKit** is open source and like *ctags* here will have it'
 
 ## Installation
 
-- copy ctags to SDK:C/ this being the standard location for development tools
+- copy SDK/C/ctags to SDK:C/ this being the standard location for ToolKit commands
 - make sure SDK: exists as an assign to your ToolKit files root, and that SDK:C/ is in your path
 - the ToolKit sdk-startup script will do this for you if you have it installed
 - ctags can also be used standalone, in which case simply place the *ctags* binary somewhere in your path
@@ -52,11 +52,13 @@ Each component of **ToolKit** is open source and like *ctags* here will have it'
 
 ## To Do
 
-- Evaluate feasibility of updating to a more modern ctags revision than 5.5, although given most Amiga software will be of the same era, there may be little to no benefit in doing so
+- Evaluate feasibility of updating to version 5.8, although given most Amiga software will be of the same era, there may be little to no benefit in doing so
 - Permanently fork the code and remove irrelevant files
+- Test VBCC support
 - Add unittests or test files - currently WIP
 - Code review and hardening
-- Remove RCS artifacts. We're on github now!
+- Possibly create a new shared regex library if other ToolKit tools need it
+- Test Amiga '#?' wildcard support 
 
 ## Contact 
 

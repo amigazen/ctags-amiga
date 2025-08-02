@@ -1,0 +1,71 @@
+# $Id: mk_sas.mak,v 1.9 2003/02/13 02:59:30 darren Exp $
+#
+# Makefile for SAS/C Amiga Compiler
+# Submitted by Stefan Haubenthal <polluks@freeshell.org>
+
+CFLAGS= def AMIGA opt parm r nover
+CFLAGS= $(CFLAGS) def HAVE_REGCOMP def POSIX_REGEX idir=include:
+
+OBJEXT = o
+
+OBJECTS = \
+	args.$(OBJEXT) \
+	asm.$(OBJEXT) \
+	asp.$(OBJEXT) \
+	awk.$(OBJEXT) \
+	beta.$(OBJEXT) \
+	c.$(OBJEXT) \
+	cobol.$(OBJEXT) \
+	eiffel.$(OBJEXT) \
+	entry.$(OBJEXT) \
+	erlang.$(OBJEXT) \
+	fortran.$(OBJEXT) \
+	get.$(OBJEXT) \
+	html.$(OBJEXT) \
+	jscript.$(OBJEXT) \
+	keyword.$(OBJEXT) \
+	lisp.$(OBJEXT) \
+	lregex.$(OBJEXT) \
+	lua.$(OBJEXT) \
+	main.$(OBJEXT) \
+	make.$(OBJEXT) \
+	options.$(OBJEXT) \
+	parse.$(OBJEXT) \
+	pascal.$(OBJEXT) \
+	perl.$(OBJEXT) \
+	php.$(OBJEXT) \
+	python.$(OBJEXT) \
+	read.$(OBJEXT) \
+	rexx.$(OBJEXT) \
+	routines.$(OBJEXT) \
+	ruby.$(OBJEXT) \
+	scheme.$(OBJEXT) \
+	sh.$(OBJEXT) \
+	slang.$(OBJEXT) \
+	sort.$(OBJEXT) \
+	sml.$(OBJEXT) \
+	sql.$(OBJEXT) \
+	strlist.$(OBJEXT) \
+	tcl.$(OBJEXT) \
+	verilog.$(OBJEXT) \
+	vim.$(OBJEXT) \
+	vstring.$(OBJEXT) \
+	yacc.$(OBJEXT) \
+	regexp.$(OBJEXT)
+
+ctags: $(OBJECTS)
+	sc link to $@ $(OBJECTS) math s
+
+.c.o:
+	$(CC) $(CFLAGS) to $*.o $*.c
+
+clean:
+	-delete $(OBJECTS) ctags.lnk
+
+archive: clean
+	@-delete force RAM:ctags.lha
+	lha -r a RAM:ctags // ctags-5.5
+	lha a RAM:ctags SC:rexx/ctags.ced
+
+# Dependencies
+regexp.o: regexp.c regexp_internal.h regexp_impl.c

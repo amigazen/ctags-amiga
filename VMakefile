@@ -1,0 +1,91 @@
+# VMakefile for ctags 5.5 - VBCC Compiler
+# Based on mk_sas.mak but adapted for VBCC
+
+# Compiler and linker settings
+CC = vc
+LD = vlink
+STRIP = strip
+
+# Compiler flags
+CFLAGS = -c -O2 -DAMIGA -DHAVE_REGCOMP -Iinclude: -Iinclude:proto
+LDFLAGS = -bamigahunk -s -Llib: -lamiga
+
+# Object files
+OBJS = args.o asm.o asp.o awk.o beta.o c.o cobol.o eiffel.o entry.o erlang.o \
+       fortran.o get.o html.o jscript.o keyword.o lisp.o lregex.o lua.o main.o \
+       make.o options.o parse.o pascal.o perl.o php.o python.o read.o rexx.o \
+       regexp.o routines.o ruby.o scheme.o sh.o slang.o sort.o sml.o sql.o strlist.o \
+       tcl.o verilog.o vim.o vstring.o yacc.o
+
+# Target executable
+TARGET = ctags
+
+# Default target
+all: $(TARGET)
+
+# Main target
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) -o $@ $(OBJS)
+
+# Compilation rule
+.c.o:
+	$(CC) $(CFLAGS) -o $*.o $*.c
+
+# Clean target
+clean:
+	-delete $(OBJS) $(TARGET)
+
+# Install target
+install: $(TARGET)
+	copy $(TARGET) C:$(TARGET)
+
+# Archive target
+archive: clean
+	@-delete force RAM:$(TARGET).lha
+	lha -r a RAM:$(TARGET) // $(TARGET)-5.5
+	lha a RAM:$(TARGET) SC:rexx/$(TARGET).ced
+
+# Dependencies
+args.o: args.c args.h general.h
+asm.o: asm.c general.h debug.h keyword.h parse.h read.h routines.h vstring.h
+regexp.o: regexp.c regexp_internal.h regexp_impl.c
+asp.o: asp.c general.h parse.h read.h vstring.h
+awk.o: awk.c general.h
+beta.o: beta.c general.h entry.h parse.h read.h routines.h vstring.h
+c.o: c.c general.h
+cobol.o: cobol.c general.h parse.h
+eiffel.o: eiffel.c general.h
+entry.o: entry.c general.h debug.h ctags.h entry.h main.h options.h read.h routines.h sort.h strlist.h
+erlang.o: erlang.c general.h entry.h options.h read.h routines.h vstring.h
+fortran.o: fortran.c general.h debug.h entry.h keyword.h options.h parse.h read.h routines.h vstring.h
+get.o: get.c general.h
+html.o: html.c general.h parse.h
+jscript.o: jscript.c general.h parse.h
+keyword.o: keyword.c general.h keyword.h
+lisp.o: lisp.c general.h
+lregex.o: lregex.c general.h debug.h entry.h parse.h read.h routines.h
+lua.o: lua.c general.h
+main.o: main.c general.h main.h ctags.h
+make.o: make.c general.h
+options.o: options.c general.h ctags.h debug.h main.h options.h parse.h routines.h
+parse.o: parse.c general.h debug.h entry.h main.h options.h parsers.h read.h routines.h vstring.h
+pascal.o: pascal.c general.h
+perl.o: perl.c general.h
+php.o: php.c general.h parse.h read.h vstring.h
+python.o: python.c general.h
+read.o: read.c general.h read.h
+rexx.o: rexx.c general.h
+routines.o: routines.c general.h debug.h routines.h
+ruby.o: ruby.c general.h
+scheme.o: scheme.c general.h parse.h read.h vstring.h
+sh.o: sh.c general.h parse.h read.h routines.h vstring.h
+slang.o: slang.c general.h parse.h
+sort.o: sort.c general.h sort.h
+sml.o: sml.c general.h entry.h parse.h read.h vstring.h
+sql.o: sql.c general.h debug.h entry.h
+strlist.o: strlist.c general.h strlist.h
+tcl.o: tcl.c general.h
+verilog.o: verilog.c general.h parse.h read.h vstring.h
+vim.o: vim.c general.h
+vstring.o: vstring.c general.h debug.h routines.h vstring.h
+yacc.o: yacc.c general.h parse.h 

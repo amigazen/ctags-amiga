@@ -879,7 +879,7 @@ const char *const Usage =
     "    -t file      Use specified tag file (default: \"tags\").\n"
     "Note that options are acted upon as encountered, so order is significant.\n";
 
-extern int main (int argc, char **argv)
+int main (int argc, char **argv)
 {
     int options = 0;
     int actionSupplied = 0;

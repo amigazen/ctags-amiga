@@ -21,5 +21,7 @@
 #define HAVE_STRICMP 1
 #define HAVE_STRNICMP 1
 #define HAVE_UNISTD_H 1
+#define HAVE_REGCOMP 1
+#define POSIX_REGEX 1
 
 #endif

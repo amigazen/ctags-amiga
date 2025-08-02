@@ -609,7 +609,7 @@ static void makeTags (cookedArgs* args)
  *	Start up code
  */
 
-extern int main (int __unused__ argc, char **argv)
+int main (int __unused__ argc, char **argv)
 {
     cookedArgs *args;
 #ifdef VMS

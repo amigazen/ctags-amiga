@@ -1,0 +1,27 @@
+/* $VER: ctags.ced 1.0
+ * jump to tag
+ * © by Stefan Haubenthal 2003
+ */
+if ~show("L","rexxsupport.library") then
+	call addlib("rexxsupport.library",0,-30,0)
+
+tags="T:tags"
+options results
+status  7;source_tabs=result
+status 19;source_file=result
+status 55;source_line=result
+status 87;source_col=result
+
+parse value source_line with +source_col source_tag "("
+source_tag=trim(source_tag)
+parse value statef(source_file) with . . . . d1 m1 t1
+parse value statef(tags) with . . . . d2 m2 t2
+if d1>d2 then if m1>m2 then if t1>t2 then address command ctags "-f" tags "-n" '"'source_file'"'
+call open(tag_file,tags)
+do while ~eof(tag_file) & tag~=source_tag
+	parse value readln(tag_file) with tag "09"x . "09"x n ";" .
+end
+if n="" then
+	okay1 "'"source_tag"' not found."
+else
+	jumpto n
