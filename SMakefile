@@ -2,8 +2,9 @@
 #
 # Makefile for SAS/C Amiga Compiler
 # Submitted by Stefan Haubenthal <polluks@freeshell.org>
+# Updated by amigazen project 2025
 
-CFLAGS= def AMIGA opt parm r nover
+CFLAGS= def AMIGA opt parm r nover NOICONS
 CFLAGS= $(CFLAGS) def HAVE_REGCOMP def POSIX_REGEX idir=include:
 
 OBJEXT = o
@@ -70,18 +71,3 @@ archive: clean
 
 # Dependencies
 regexp.o: regexp.c regexp_internal.h regexp_impl.c
-
-# Documentation generation using rman
-docs: ctags
-	@echo "Generating documentation..."
-	@if [ -f "../rman-amiga/rman" ]; then \
-		echo "Converting ctags.1 to AmigaGuide format..."; \
-		../rman-amiga/rman -f AmigaGuide ctags.1 > ctags.guide; \
-		echo "Converting ctags.1 to HTML format..."; \
-		../rman-amiga/rman -f HTML ctags.1 > ctags.html; \
-		echo "Converting ctags.1 to ASCII format..."; \
-		../rman-amiga/rman -f ASCII ctags.1 > ctags.txt; \
-		echo "Documentation generated: ctags.guide, ctags.html, ctags.txt"; \
-	else \
-		echo "rman not found. Please build rman-amiga first."; \
-	fi
