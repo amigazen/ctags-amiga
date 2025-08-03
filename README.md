@@ -4,7 +4,7 @@ This is ctags, compiled for classic Amiga, without ixemul or other POSIX depende
 
 ## [amigazen project](http://www.amigazen.com)
 
-*The web, suddenly*
+*A web, suddenly*
 
 *Forty years meditation*
 
@@ -24,11 +24,11 @@ PRs for all of our projects are gratefully received at [GitHub](https://github.c
 
 ## About ToolKit
 
-**ToolKit** exists to solve the problem that most Amiga software was written in the 1980s and 90s, by individuals working alone, each with their own preferred setup for where their dev tools are run from, where their include files, static libs and other toolchain artofacts could be found, which versions they used and which custom modifications they made. Open source collaboration did not exist as we know it in 2025. 
+**ToolKit** exists to solve the problem that most Amiga software was written in the 1980s and 90s, by individuals working alone, each with their own preferred setup for where their dev tools are run from, where their include files, static libs and other toolchain artifacts could be found, which versions they used and which custom modifications they made. Open source collaboration did not exist as we know it in 2025. 
 
 **ToolKit** from amigazen project is a work in progress to make a standardised installation of not just the Native Developer Kit, but the compilers, build tools and third party components needed to be able to consistently build projects in collaboration with others, without each contributor having to change build files to work with their particular toolchain configuration. 
 
-All *amigazen project* releases will released in a ready to build configuration according to the ToolKit standard.
+All *amigazen project* releases will release in a ready to build configuration according to the ToolKit standard.
 
 Each component of **ToolKit** is open source and like *ctags* here will have it's own github repo, while ToolKit itself will eventually be released as an easy to install package containing the redistributable components, as well as scripts to easily install the parts that are not freely redistributable from archive.
 
